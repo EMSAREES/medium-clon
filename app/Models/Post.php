@@ -67,4 +67,27 @@ class Post extends Model
     {
         return 'slug';
     }
+
+    /**
+ * Total de aplausos que ha recibido este post (sumando el
+ * "count" de todas las filas de la tabla claps), sin importar
+ * cuántos usuarios distintos aplaudieron.
+ */
+public function totalClaps(): int
+{
+    return $this->claps()->sum('count');
+}
+
+    /**
+     * Cuántos claps dio un usuario específico en este post.
+     * Devuelve 0 si el usuario es null (invitado) o si nunca aplaudió.
+     */
+    public function clapsFromUser(?User $user): int
+    {
+        if (! $user) {
+            return 0;
+        }
+
+        return $this->claps()->where('user_id', $user->id)->value('count') ?? 0;
+    }
 }

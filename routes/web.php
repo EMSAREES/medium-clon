@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ClapController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -22,5 +23,9 @@ Route::middleware('auth')->group(function () {
 // "posts.index" (GET /posts), "posts.show" (GET /posts/{post}), etc.
 // se generan automáticamente con nombres tipo "posts.create", "posts.store"...
 Route::resource('posts', PostController::class);
+
+Route::post('/posts/{post}/claps', [ClapController::class, 'store'])
+    ->middleware('auth')
+    ->name('posts.claps.store');
 
 require __DIR__.'/auth.php';
