@@ -1,54 +1,33 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Escribir nuevo post
-        </h2>
-    </x-slot>
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 py-10">
 
-    @if (is_null($post->published_at))
-        <div class="bg-yellow-50 border-b border-yellow-200">
-            <div class="max-w-3xl mx-auto sm:px-6 lg:px-8 py-3">
-                <p class="text-sm text-yellow-800">
-                    📝 Este post es un <strong>borrador</strong> — solo tú puedes verlo.
-                </p>
+        <form method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data">
+            @csrf
+
+            @include('posts.partials.form')
+
+            {{-- Botones de acción, como una barra flotante al final --}}
+            <div class="flex items-center justify-end gap-3 pt-6 border-t border-ink-faint">
+                <button
+                    type="submit"
+                    name="action"
+                    value="draft"
+                    class="text-sm text-ink-light hover:text-ink px-4 py-2"
+                >
+                    Guardar borrador
+                </button>
+
+                <button
+                    type="submit"
+                    name="action"
+                    value="publish"
+                    class="text-sm bg-accent text-white px-5 py-2 rounded-full hover:bg-accent-dark transition-colors"
+                >
+                    Publicar
+                </button>
             </div>
-        </div>
-    @endif
 
-    <div class="py-12">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white p-6 shadow sm:rounded-lg">
+        </form>
 
-                {{--
-                    enctype="multipart/form-data" es OBLIGATORIO cuando
-                    el formulario incluye un <input type="file">.
-                    Sin esto, la imagen simplemente no llega al servidor.
-                --}}
-                <form method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data">
-                    @csrf
-                    {{-- @csrf inserta un token oculto que protege contra
-                         ataques de tipo CSRF (Cross-Site Request Forgery).
-                         Toda petición POST/PUT/DELETE en Laravel lo requiere. --}}
-
-                    @include('posts.partials.form')
-
-                    <div class="flex justify-end gap-3 mt-6">
-                        <button
-                            type="submit"
-                            name="action"
-                            value="draft"
-                            class="px-4 py-2 rounded-md border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                        >
-                            Guardar borrador
-                        </button>
-
-                        <x-primary-button type="submit" name="action" value="publish">
-                            Publicar
-                        </x-primary-button>
-                    </div>
-                </form>
-
-            </div>
-        </div>
     </div>
 </x-app-layout>

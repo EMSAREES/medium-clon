@@ -1,30 +1,43 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Editar post
-        </h2>
-    </x-slot>
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 py-10">
 
-    <div class="py-12">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white p-6 shadow sm:rounded-lg">
+        <form method="POST" action="{{ route('posts.update', $post) }}" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
 
-                <form method="POST" action="{{ route('posts.update', $post) }}" enctype="multipart/form-data">
-                    @csrf
-                    {{-- HTML solo entiende GET y POST en formularios reales.
-                         @method('PUT') agrega un campo oculto que Laravel
-                         interpreta como "esta petición es en realidad un PUT",
-                         para que llegue al método update() del controlador. --}}
-                    @method('PUT')
+            @include('posts.partials.form')
 
-                    @include('posts.partials.form')
+            <div class="flex items-center justify-between gap-3 pt-6 border-t border-ink-faint">
+                <span class="text-xs text-ink-light">
+                    @if ($post->published_at)
+                        Publicado el {{ $post->published_at->format('d M, Y') }}
+                    @else
+                        Borrador sin publicar
+                    @endif
+                </span>
 
-                    <div class="flex justify-end mt-6">
-                        <x-primary-button>Guardar cambios</x-primary-button>
-                    </div>
-                </form>
+                <div class="flex gap-3">
+                    <button
+                        type="submit"
+                        name="action"
+                        value="draft"
+                        class="text-sm text-ink-light hover:text-ink px-4 py-2"
+                    >
+                        Guardar como borrador
+                    </button>
 
+                    <button
+                        type="submit"
+                        name="action"
+                        value="publish"
+                        class="text-sm bg-accent text-white px-5 py-2 rounded-full hover:bg-accent-dark transition-colors"
+                    >
+                        {{ $post->published_at ? 'Guardar cambios' : 'Publicar' }}
+                    </button>
+                </div>
             </div>
-        </div>
+
+        </form>
+
     </div>
 </x-app-layout>
