@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Post extends Model
 {
@@ -20,9 +22,39 @@ class Post extends Model
         'published_at',
     ];
 
-    // Le dice a Eloquent que convierta automáticamente published_at
-    // en un objeto Carbon (fecha) en vez de un string plano.
     protected $casts = [
         'published_at' => 'datetime',
     ];
+
+    /**
+     * El autor del post.
+     * Uso: $post->author->name
+     *
+     * Nota: aunque la columna se llama "user_id", llamamos al método
+     * author() (no user()) porque es más expresivo en este contexto.
+     * Como el nombre no calza con la convención automática, le
+     * indicamos explícitamente la foreign key.
+     */
+    public function author(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * La categoría a la que pertenece el post.
+     * Uso: $post->category->name
+     */
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * Las filas de "claps" (aplausos) que ha recibido este post.
+     * Uso: $post->claps->sum('count')  -> total de aplausos
+     */
+    public function claps(): HasMany
+    {
+        return $this->hasMany(Clap::class);
+    }
 }
