@@ -57,4 +57,14 @@ class Post extends Model
     {
         return $this->hasMany(Clap::class);
     }
+
+    /**
+     * Le dice a Laravel que use "slug" en vez de "id" al resolver
+     * el modelo automáticamente en las rutas (Route Model Binding).
+     * Uso: Route::get('/posts/{post}', ...) ahora busca por slug.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 }
