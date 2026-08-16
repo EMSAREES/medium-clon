@@ -7,6 +7,8 @@ use App\Http\Requests\PostUpdateRequest;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -18,9 +20,22 @@ class PostController extends Controller
      * Así, cualquiera puede ver posts (index/show), pero solo un
      * usuario logueado puede crear/editar/borrar.
      */
-    public function __construct()
+    // public function __construct()
+    // {
+    //     $this->middleware('auth')->except(['index', 'show']);
+    // }
+
+    /**
+     * Reemplaza al viejo $this->middleware() de versiones anteriores.
+     * Debe ser static y devolver un array de Middleware.
+     * "except" funciona igual que antes: excluye index y show,
+     * que quedan públicos para cualquier visitante.
+     */
+    public static function middleware(): array
     {
-        $this->middleware('auth')->except(['index', 'show']);
+        return [
+            new Middleware('auth', except: ['index', 'show']),
+        ];
     }
 
     /**
