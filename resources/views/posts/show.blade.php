@@ -19,7 +19,9 @@
 
                 <div class="flex items-center justify-between text-sm text-gray-500 mb-6">
                     <div>
-                        Por <span class="font-medium">{{ $post->author->name }}</span>
+                        Por <a href="{{ route('users.show', $post->author) }}" class="font-medium text-indigo-600 hover:underline">
+                            {{ $post->author->name }}
+                        </a>
                         en
                         <span class="font-medium">{{ $post->category->name }}</span>
                     </div>

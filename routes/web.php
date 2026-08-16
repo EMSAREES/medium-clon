@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\FollowController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClapController;
 
@@ -27,5 +29,17 @@ Route::resource('posts', PostController::class);
 Route::post('/posts/{post}/claps', [ClapController::class, 'store'])
     ->middleware('auth')
     ->name('posts.claps.store');
+
+// Perfil público — cualquiera puede verlo, sin login.
+Route::get('/u/{user}', [UserProfileController::class, 'show'])->name('users.show');
+
+// Seguir / dejar de seguir — requieren estar logueado.
+Route::post('/u/{user}/follow', [FollowController::class, 'store'])
+    ->middleware('auth')
+    ->name('users.follow');
+
+Route::delete('/u/{user}/follow', [FollowController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('users.unfollow');
 
 require __DIR__.'/auth.php';

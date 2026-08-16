@@ -37,7 +37,8 @@
                     @endif
 
                     <div class="text-sm text-gray-500 mt-4">
-                        {{ $post->author->name }} · {{ $post->category->name }}
+                        <a href="{{ route('users.show', $post->author) }}" class="hover:underline">{{ $post->author->name }}</a>
+                        · {{ $post->category->name }}
                         · {{ $post->published_at->diffForHumans() }}
                     </div>
                 </article>
