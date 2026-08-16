@@ -6,10 +6,7 @@
             </h2>
 
             @auth
-
-                    href="{{ route('posts.create') }}"
-                    class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm rounded-md hover:bg-indigo-700"
-                >
+                <a href="{{ route('posts.create') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm rounded-md hover:bg-indigo-700">
                     Escribir post
                 </a>
             @endauth
