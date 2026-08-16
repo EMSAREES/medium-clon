@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*
+ * Estilos base globales del proyecto.
+ * Aquí definimos comportamientos que aplican a TODA la app,
+ * no solo a un componente específico.
+ */
+@layer base {
+    body {
+        /* Suaviza el renderizado de fuentes en pantallas de alta
+           densidad (Mac/Retina), acercándose a como se ve Medium. */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
