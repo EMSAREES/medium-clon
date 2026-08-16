@@ -73,20 +73,25 @@ class PostController extends Controller
         $data = $request->validated();
 
         if ($request->hasFile('cover_image')) {
-            // Guarda el archivo en storage/app/public/posts
-            // y devuelve la ruta relativa, ej: "posts/archivo.jpg"
             $data['cover_image'] = $request->file('cover_image')
                 ->store('posts', 'public');
         }
 
-        $post = $request->user()->posts()->create([
-            ...$data,
-            'published_at' => now(),
-        ]);
+        // El formulario envía un botón distinto según la acción:
+        // name="action" value="publish" o value="draft".
+        // Si es "publish", ponemos la fecha actual; si es "draft",
+        // dejamos published_at en null (no aparecerá en el listado público).
+        $data['published_at'] = $request->input('action') === 'publish'
+            ? now()
+            : null;
+
+        $post = $request->user()->posts()->create($data);
 
         return redirect()
             ->route('posts.show', $post)
-            ->with('success', 'Post publicado correctamente.');
+            ->with('success', $post->published_at
+                ? 'Post publicado correctamente.'
+                : 'Borrador guardado correctamente.');
     }
 
     /**
@@ -94,6 +99,8 @@ class PostController extends Controller
      */
     public function show(Post $post): View
     {
+        $this->authorize('view', $post);
+        
         $post->load(['author', 'category']);
 
         return view('posts.show', compact('post'));
@@ -129,6 +136,15 @@ class PostController extends Controller
                 ->store('posts', 'public');
         }
 
+        // Solo tocamos published_at si el usuario presionó explícitamente
+        // "Publicar" o "Guardar como borrador". Si simplemente guardó
+        // cambios de texto (sin ese botón), respetamos el estado actual.
+        if ($request->filled('action')) {
+            $data['published_at'] = $request->input('action') === 'publish'
+                ? now()
+                : null;
+        }
+
         $post->update($data);
 
         return redirect()
@@ -138,6 +154,10 @@ class PostController extends Controller
 
     public function destroy(Post $post): RedirectResponse
     {
+        // if ($post->user_id !== auth()->id()) {
+        //     abort(403);
+        // }
+
         $this->authorize('delete', $post);
 
         if ($post->cover_image) {
@@ -150,4 +170,6 @@ class PostController extends Controller
             ->route('posts.index')
             ->with('success', 'Post eliminado correctamente.');
     }
+
+
 }

@@ -46,4 +46,18 @@ class PostPolicy
     {
         return $user->id === $post->user_id;
     }
+
+    /**
+     * ¿Puede $user ver este $post?
+     * - Si está publicado, cualquiera puede verlo (incluso invitados).
+     * - Si es un borrador, solo el autor puede verlo.
+     */
+    public function view(?User $user, Post $post): bool
+    {
+        if ($post->published_at !== null) {
+            return true;
+        }
+
+        return $user?->id === $post->user_id;
+    }
 }

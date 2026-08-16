@@ -27,6 +27,24 @@ class PostStoreRequest extends FormRequest
         ];
     }
 
+    /**
+     * Mensajes de error personalizados, en español, para cada regla.
+     * La clave sigue el formato "campo.regla".
+     */
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'El título es obligatorio.',
+            'title.max' => 'El título no puede tener más de :max caracteres.',
+            'category_id.required' => 'Debes seleccionar una categoría.',
+            'category_id.exists' => 'La categoría seleccionada no es válida.',
+            'content.required' => 'El contenido del post es obligatorio.',
+            'cover_image.image' => 'El archivo debe ser una imagen (jpg, png, etc).',
+            'cover_image.max' => 'La imagen no puede pesar más de 2MB.',
+            'slug.unique' => 'Ya existe un post con un título muy similar. Prueba con otro título.',
+        ];
+    }
+
     protected function prepareForValidation(): void
     {
         $this->merge([

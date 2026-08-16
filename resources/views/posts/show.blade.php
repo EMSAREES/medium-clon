@@ -67,7 +67,7 @@
                 @can('update', $post)
                     <div class="flex gap-3 mt-8 pt-6 border-t">
 
-                            href="{{ route('posts.edit', $post) }}"
+                        <href="{{ route('posts.edit', $post) }}"
                             class="text-indigo-600 hover:text-indigo-900 text-sm font-medium"
                         >
                             Editar
