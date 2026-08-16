@@ -7,6 +7,38 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property int $id
+ * @property int $user_id
+ * @property int|null $category_id
+ * @property string $title
+ * @property string $slug
+ * @property string|null $excerpt
+ * @property string $content
+ * @property string|null $cover_image
+ * @property \Illuminate\Support\Carbon|null $published_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\User $author
+ * @property-read \App\Models\Category|null $category
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Clap> $claps
+ * @property-read int|null $claps_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Post newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Post newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Post query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereCoverImage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereExcerpt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Post wherePublishedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Post whereUserId($value)
+ * @mixin \Eloquent
+ */
 class Post extends Model
 {
     use HasFactory;
