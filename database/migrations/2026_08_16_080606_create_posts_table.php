@@ -18,14 +18,12 @@ return new class extends Migration
             // por convención (user_id -> tabla "users", columna "id").
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
 
-            // Categoría del artículo. nullable() porque un post podría
-            // quedar sin categoría asignada (borrador, por ejemplo).
-            // nullOnDelete(): si se borra la categoría, el post NO se
-            // borra, solo su category_id queda en null.
             $table->foreignId('category_id')
-                ->nullable()
                 ->constrained()
-                ->nullOnDelete();
+                // Si alguien intenta borrar una categoría que todavía tiene
+                // posts asociados, Postgres RECHAZA el borrado (evita dejar
+                // artículos huérfanos). Es más seguro que "cascade" aquí.
+                ->restrictOnDelete();
 
             $table->string('title');
             $table->string('slug')->unique();
