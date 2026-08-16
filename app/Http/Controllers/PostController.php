@@ -105,6 +105,10 @@ class PostController extends Controller
      */
     public function edit(Post $post): View
     {
+        // Lanza un error 403 (Forbidden) automáticamente si el usuario
+        // logueado no es el autor del post.
+        $this->authorize('update', $post);
+
         $categories = Category::orderBy('name')->get();
 
         return view('posts.edit', compact('post', 'categories'));
@@ -112,11 +116,11 @@ class PostController extends Controller
 
     public function update(PostUpdateRequest $request, Post $post): RedirectResponse
     {
+        $this->authorize('update', $post);
+
         $data = $request->validated();
 
         if ($request->hasFile('cover_image')) {
-            // Borra la imagen anterior antes de guardar la nueva,
-            // para no dejar archivos huérfanos en el disco.
             if ($post->cover_image) {
                 Storage::disk('public')->delete($post->cover_image);
             }
@@ -134,6 +138,8 @@ class PostController extends Controller
 
     public function destroy(Post $post): RedirectResponse
     {
+        $this->authorize('delete', $post);
+
         if ($post->cover_image) {
             Storage::disk('public')->delete($post->cover_image);
         }
