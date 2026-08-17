@@ -18,7 +18,7 @@
                 @auth
                     <!-- Botón "Escribir", el equivalente al ícono de lápiz de Medium -->
 
-                    <href="{{ route('posts.create') }}"
+                    <a href="{{ route('posts.create') }}"
                         class="hidden sm:flex items-center gap-1.5 text-sm text-ink-light hover:text-ink transition-colors"
                     >
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -65,7 +65,7 @@
                         Iniciar sesión
                     </a>
 
-                        href="{{ route('register') }}"
+                    <a href="{{ route('register') }}"
                         class="text-sm bg-ink text-white px-4 py-1.5 rounded-full hover:bg-black transition-colors"
                     >
                         Registrarse
