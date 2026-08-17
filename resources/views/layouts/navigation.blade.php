@@ -2,23 +2,46 @@
     <div class="max-w-6xl mx-auto px-4 sm:px-6">
         <div class="flex justify-between items-center h-16">
 
-            <!-- Logo + nombre del sitio -->
-            <div class="flex items-center gap-8">
-                <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
+            <!-- Logo + nombre del sitio + link a Inicio -->
+            <div class="flex items-center gap-6">
+                <a href="{{ route('posts.index') }}" class="flex items-center gap-2 shrink-0">
                     <x-application-logo class="block h-8 w-auto fill-current text-ink" />
                     <span class="font-serif text-xl font-semibold text-ink hidden sm:block">
                         {{ config('app.name') }}
                     </span>
                 </a>
+
+                <a
+                    href="{{ route('posts.index') }}"
+                    class="hidden md:block text-sm {{ request()->routeIs('posts.index') ? 'text-ink font-medium' : 'text-ink-light hover:text-ink' }}"
+                >
+                    Inicio
+                </a>
             </div>
+
+            <!-- Buscador (solo visible desde sm hacia arriba) -->
+            <form method="GET" action="{{ route('search') }}" class="flex-1 max-w-xs mx-4 hidden sm:block">
+                <div class="relative">
+                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <input
+                        type="search"
+                        name="q"
+                        value="{{ request('q') }}"
+                        placeholder="Buscar"
+                        class="w-full pl-9 pr-3 py-1.5 text-sm bg-gray-100 border-0 rounded-full focus:ring-2 focus:ring-accent focus:bg-white transition-colors"
+                    >
+                </div>
+            </form>
 
             <!-- Acciones a la derecha: Escribir + menú de usuario -->
             <div class="flex items-center gap-4">
 
                 @auth
                     <!-- Botón "Escribir", el equivalente al ícono de lápiz de Medium -->
-
-                    <a href="{{ route('posts.create') }}"
+                    <a
+                        href="{{ route('posts.create') }}"
                         class="hidden sm:flex items-center gap-1.5 text-sm text-ink-light hover:text-ink transition-colors"
                     >
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -65,7 +88,8 @@
                         Iniciar sesión
                     </a>
 
-                    <a href="{{ route('register') }}"
+                    <a
+                        href="{{ route('register') }}"
                         class="text-sm bg-ink text-white px-4 py-1.5 rounded-full hover:bg-black transition-colors"
                     >
                         Registrarse
@@ -87,13 +111,27 @@
 
     <!-- Menú responsive -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden border-t border-ink-faint">
+
+        <!-- Buscador en móvil -->
+        <div class="px-4 pt-3 pb-1">
+            <form method="GET" action="{{ route('search') }}">
+                <input
+                    type="search"
+                    name="q"
+                    value="{{ request('q') }}"
+                    placeholder="Buscar"
+                    class="w-full px-3 py-2 text-sm bg-gray-100 border-0 rounded-full focus:ring-2 focus:ring-accent"
+                >
+            </form>
+        </div>
+
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+            <x-responsive-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.index')">
+                {{ __('Inicio') }}
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.index')">
-                {{ __('Artículos') }}
+            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                {{ __('Dashboard') }}
             </x-responsive-nav-link>
 
             @auth

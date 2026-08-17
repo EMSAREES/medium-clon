@@ -6,11 +6,13 @@ use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\FollowController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClapController;
+use App\Http\Controllers\SearchController;
 
 // Route::get('/', function () {
 //     return view('welcome');
 // });
 Route::redirect('/', '/posts');
+Route::get('/search', [SearchController::class, 'index'])->name('search');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
