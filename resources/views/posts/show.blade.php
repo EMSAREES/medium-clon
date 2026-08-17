@@ -14,7 +14,7 @@
     <article class="max-w-2xl mx-auto px-4 sm:px-6 py-10">
 
         {{-- Categoría, como una pequeña etiqueta editorial --}}
-
+        <a
             href="{{ route('posts.index') }}"
             class="inline-block text-xs font-medium text-accent uppercase tracking-wide mb-4 hover:underline"
         >

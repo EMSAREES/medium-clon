@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 
 class ClapController extends Controller
 {
@@ -21,7 +22,7 @@ class ClapController extends Controller
         // Como $post->claps() ya es una relación hasMany filtrada
         // por post_id, no hace falta repetirlo en el array.
         $clap = $post->claps()->firstOrCreate(
-            ['user_id' => auth()->id()],
+            ['user_id' => Auth::id()],
             ['count' => 0]
         );
 
